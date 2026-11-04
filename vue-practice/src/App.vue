@@ -1,9 +1,11 @@
 <script setup>
-import TargetPlay from '.\components\TargetPlay.vue';
+import AudioPlay from '.\components\AudioPlay.vue';
+import QuestionCard from '.\components\QuestionCard.vue';
 </script>
 
 <template>
-  <TargetPlay/>
+  <AudioPlay/>
+  <QuestionCard/>
 </template>
 
 <style scoped></style>

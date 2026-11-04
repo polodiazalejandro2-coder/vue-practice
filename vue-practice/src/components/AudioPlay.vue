@@ -6,7 +6,7 @@
 
 <script>
 import {Howl} from 'howler';
-import startmusic from '../../../src/stores/playlist.js'
+import startmusic from 'vue-practice\src\stores\functionsquiz.js'
 </script>
 
 <style>
