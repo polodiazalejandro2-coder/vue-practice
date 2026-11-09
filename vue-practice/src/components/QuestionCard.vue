@@ -1,5 +1,6 @@
 <template>
-    <p class="option"></p>
+    <p class="option">:v</p>
+    
 </template>
 
 <script>

@@ -1,11 +1,16 @@
 <script setup>
-import AudioPlay from './components/AudioPlay.vue';
-import QuestionCard from './components/QuestionCard.vue';
+import { RouterView } from 'vue-router';
+import HeaderGame from '@/components/HeaderGame.vue';
 </script>
 
 <template>
-  <AudioPlay/>
-  <QuestionCard/>
+  <header>
+    <HeaderGame />
+  </header>
+  <main>
+    <RouterView />
+  </main>
 </template>
+
 
 <style scoped></style>
