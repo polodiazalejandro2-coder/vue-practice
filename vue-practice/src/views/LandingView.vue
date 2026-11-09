@@ -1,3 +1,5 @@
 <template>
-    <h1>Hola soy un html</h1>
+    <h1>Bienvenido al juego</h1>
+    <input placeholder="Ingresa tu nombre" />
+    <button @click="startGame" class="button">Iniciar juego</button>
 </template>
