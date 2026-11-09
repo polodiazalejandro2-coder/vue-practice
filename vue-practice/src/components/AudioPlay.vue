@@ -1,9 +1,8 @@
 <template>
     <div class="audio-container">
-        <audio ref="audio" :src="audioSrc" @ended="onAudioEnded"></audio>
-    <p>Reproduce la cancion</p>
-    <button @click="startmusic" class="button">Play</button>
-    <button @click="repeatmusic" class="button">Repeat</button>
+        <p>Reproduce la cancion</p>
+        <button @click="handlePlay" class="button">Play</button>
+        <button @click="repeatMusic" class="button">Repeat</button>
     </div>
     <div class="answers">
         <input placeholder="Ingresa el nombre de la cancion" />
@@ -11,9 +10,10 @@
 </template>
 
 <script>
-import { stop } from 'vue';
-
-
+import { useAudio } from '@/composables/useAudio';
+import cancionUrl from '@/assets/songs/roxanne.mp3';
+const { loadAndPlay, repeatMusic } = useAudio()
+const handlePlay = () => { loadAndPlay(cancionUrl) }
 </script>
 
 <style>
@@ -26,6 +26,7 @@ import { stop } from 'vue';
     border-radius: 5px;
     cursor: pointer;
 }
+
 .input {
     width: 100%;
     height: 50px;
