@@ -2,18 +2,36 @@
     <div class="audio-container">
         <p>Reproduce la cancion</p>
         <button @click="handlePlay" class="button">Play</button>
-        <button @click="repeatMusic" class="button">Repeat</button>
+        <button @click="handleRepeat" class="button">Repeat</button>
     </div>
     <div class="answers">
-        <input placeholder="Ingresa el nombre de la cancion" />
+        <input class="input" placeholder="Ingresa el nombre de la cancion" />
     </div>
 </template>
 
 <script>
-import { useAudio } from '@/composables/useAudio';
-import cancionUrl from '@/assets/songs/roxanne.mp3';
-const { loadAndPlay, repeatMusic } = useAudio()
-const handlePlay = () => { loadAndPlay(cancionUrl) }
+import { useAudio } from '@/composables/useAudio'
+import cancionUrl from '@/assets/songs/roxanne.mp3'
+
+export default {
+  name: 'AudioPlay',
+  setup() {
+    const { loadAndPlay, repeatMusic } = useAudio()
+
+    const handlePlay = () => {
+      loadAndPlay(cancionUrl)
+    }
+
+    const handleRepeat = () => {
+      repeatMusic(true)
+    }
+
+    return {
+      handlePlay,
+      handleRepeat
+    }
+  }
+}
 </script>
 
 <style>
