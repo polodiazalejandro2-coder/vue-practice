@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <button class="play-again-btn" @click="$emit('restart')">
+    <button class="play-again-btn" @click="emit('restart')">
       Jugar de Nuevo
     </button>
   </div>
@@ -35,7 +35,7 @@
 import { useGameStore } from '@/stores/gameStore'
 
 const store = useGameStore()
-defineEmits(['restart'])
+const emit = defineEmits(['restart'])
 
 let precision = 0
 

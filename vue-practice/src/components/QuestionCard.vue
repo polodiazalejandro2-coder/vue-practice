@@ -8,18 +8,11 @@
 
     <div class="options-grid">
       <button
-        v-for="(opcion, index) in pregunta.options"
-        :key="index"
+        v-for="opcion in pregunta.options"
         class="option-btn"
-        :class="{
-          'opcion-correcta': respondido && opcion === pregunta.correct,
-          'opcion-incorrecta':
-            respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct,
-          'opcion-desactivada':
-            respondido && opcion !== pregunta.correct && opcion !== opcionSeleccionada,
-        }"
+        :class="obtenerClaseOpcion(opcion)"
         :disabled="respondido"
-        @click="$emit('seleccionar-opcion', opcion)"
+        @click="emit('seleccionar-opcion', opcion)"
       >
         <span>{{ opcion }}</span>
 
@@ -27,7 +20,7 @@
           [Correcto]
         </span>
         <span
-          v-else-if="respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct"
+          v-else-if="respondido && opcion === opcionSeleccionada"
           class="badge-fallo"
         >
           [Incorrecto]
@@ -36,42 +29,47 @@
     </div>
 
     <div v-if="respondido" class="answer-feedback">
-      <p class="feedback-text" :class="esCorrecta ? 'texto-verde' : 'texto-rojo'">
-        {{ esCorrecta ? 'Respuesta correcta (+10 puntos)' : 'Respuesta incorrecta (-5 puntos)' }}
+      <p v-if="esCorrecta" class="feedback-text texto-verde">
+        Respuesta correcta (+10 puntos)
+      </p>
+      <p v-else class="feedback-text texto-rojo">
+        Respuesta incorrecta (-5 puntos)
       </p>
 
-      <button class="next-btn" @click="$emit('siguiente')">
-        {{ esUltima ? "Ver Resultados" : "Siguiente Pregunta" }}
+      <button class="next-btn" @click="emit('siguiente')">
+        <span v-if="esUltima">Ver Resultados</span>
+        <span v-else>Siguiente Pregunta</span>
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
-  pregunta: {
-    type: Object,
-    required: true,
-  },
-  respondido: {
-    type: Boolean,
-    default: false,
-  },
-  opcionSeleccionada: {
-    type: String,
-    default: "",
-  },
-  esCorrecta: {
-    type: Boolean,
-    default: false,
-  },
-  esUltima: {
-    type: Boolean,
-    default: false,
-  },
-});
+const props = defineProps([
+  'pregunta',
+  'respondido',
+  'opcionSeleccionada',
+  'esCorrecta',
+  'esUltima'
+])
 
-defineEmits(["seleccionar-opcion", "siguiente"]);
+const emit = defineEmits(['seleccionar-opcion', 'siguiente'])
+
+function obtenerClaseOpcion(opcion) {
+  if (!props.respondido) {
+    return ''
+  }
+
+  if (opcion === props.pregunta.correct) {
+    return 'opcion-correcta'
+  }
+
+  if (opcion === props.opcionSeleccionada) {
+    return 'opcion-incorrecta'
+  }
+
+  return 'opcion-desactivada'
+}
 </script>
 
 <style scoped>

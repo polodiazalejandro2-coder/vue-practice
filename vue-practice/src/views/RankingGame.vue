@@ -18,9 +18,7 @@
       <div class="ranking-items">
         <div
           v-for="(item, index) in store.ranking"
-          :key="index"
           class="ranking-item"
-          :class="getRankClass(index)"
         >
           <div class="item-left">
             <span class="position-badge">[{{ index + 1 }}]</span>
@@ -63,13 +61,6 @@ import { RouterLink } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
 
 const store = useGameStore()
-
-function getRankClass(index) {
-  if (index === 0) return 'item-gold'
-  if (index === 1) return 'item-silver'
-  if (index === 2) return 'item-bronze'
-  return ''
-}
 </script>
 
 <style scoped>
@@ -143,17 +134,17 @@ function getRankClass(index) {
   padding: 1rem 1.25rem;
 }
 
-.item-gold {
+.ranking-item:nth-child(1) {
   border-color: #eab308;
   background-color: #201e14;
 }
 
-.item-silver {
+.ranking-item:nth-child(2) {
   border-color: #94a3b8;
   background-color: #1e2124;
 }
 
-.item-bronze {
+.ranking-item:nth-child(3) {
   border-color: #f97316;
   background-color: #241c17;
 }
@@ -170,15 +161,15 @@ function getRankClass(index) {
   font-size: 0.95rem;
 }
 
-.item-gold .position-badge {
+.ranking-item:nth-child(1) .position-badge {
   color: #eab308;
 }
 
-.item-silver .position-badge {
+.ranking-item:nth-child(2) .position-badge {
   color: #94a3b8;
 }
 
-.item-bronze .position-badge {
+.ranking-item:nth-child(3) .position-badge {
   color: #f97316;
 }
 
@@ -206,15 +197,15 @@ function getRankClass(index) {
   color: #888888;
 }
 
-.item-gold .honor-badge {
+.ranking-item:nth-child(1) .honor-badge {
   color: #eab308;
 }
 
-.item-silver .honor-badge {
+.ranking-item:nth-child(2) .honor-badge {
   color: #94a3b8;
 }
 
-.item-bronze .honor-badge {
+.ranking-item:nth-child(3) .honor-badge {
   color: #f97316;
 }
 

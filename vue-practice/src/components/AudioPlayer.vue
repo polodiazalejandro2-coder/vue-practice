@@ -33,13 +33,19 @@ function detenerAudio() {
   sonando.value = false
 }
 
-function reproducirFragmento() {
+function reproducirFragmento(rutaAudio) {
   detenerAudio()
 
-  if (!props.audioSrc) return
+  if (!rutaAudio) {
+    rutaAudio = props.audioSrc
+  }
+
+  if (!rutaAudio) {
+    return
+  }
 
   sound = new Howl({
-    src: [props.audioSrc],
+    src: [rutaAudio],
     html5: true,
     format: ['mp3']
   })
@@ -64,7 +70,8 @@ onUnmounted(() => {
 })
 
 defineExpose({
-  detenerAudio
+  detenerAudio: detenerAudio,
+  reproducirFragmento: reproducirFragmento
 })
 </script>
 

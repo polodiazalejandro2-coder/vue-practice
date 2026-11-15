@@ -48,9 +48,9 @@
       <GameHeader />
 
       <AudioPlayer
-        ref="reproductorAudio"
-        :key="preguntaActual.id"
         v-if="preguntaActual"
+        :key="preguntaActual.id"
+        ref="reproductorAudio"
         :audio-src="preguntaActual.audioSrc"
       />
 
@@ -60,7 +60,7 @@
         :respondido="respondido"
         :opcion-seleccionada="opcionSeleccionada"
         :es-correcta="esCorrecta"
-        :es-ultima="esUltima"
+        :es-ultima="esUltimaPregunta()"
         @seleccionar-opcion="seleccionarOpcion"
         @siguiente="avanzarPregunta"
       />
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useGameStore } from '@/stores/gameStore'
 import GameHeader from '@/components/GameHeader.vue'
 import AudioPlayer from '@/components/AudioPlayer.vue'
@@ -89,14 +89,21 @@ const reproductorAudio = ref(null)
 const respondido = ref(false)
 const opcionSeleccionada = ref('')
 const esCorrecta = ref(false)
+const preguntaActual = ref(null)
 
-const preguntaActual = computed(() => {
-  return store.preguntas[store.indicePregunta] || null
-})
+function actualizarPreguntaActual() {
+  preguntaActual.value = store.preguntas[store.indicePregunta]
+}
 
-const esUltima = computed(() => {
-  return store.indicePregunta === store.preguntas.length - 1
-})
+function esUltimaPregunta() {
+  const ultimaPregunta = store.preguntas.length - 1
+
+  if (store.indicePregunta === ultimaPregunta) {
+    return true
+  } else {
+    return false
+  }
+}
 
 function reiniciarEstadoPregunta() {
   respondido.value = false
@@ -109,7 +116,8 @@ function empezarJuego() {
     return
   }
 
-  store.iniciarJuego(nombreIntroducido.value)
+  store.iniciarJuego(nombreIntroducido.value.trim())
+  actualizarPreguntaActual()
   estadoJuego.value = 'jugando'
   reiniciarEstadoPregunta()
 }
@@ -136,17 +144,19 @@ function seleccionarOpcion(opcion) {
 }
 
 function avanzarPregunta() {
-  if (esUltima.value) {
+  if (esUltimaPregunta()) {
     store.guardarEnRanking()
     estadoJuego.value = 'terminado'
   } else {
     store.siguientePregunta()
+    actualizarPreguntaActual()
     reiniciarEstadoPregunta()
   }
 }
 
 function volverAJugar() {
   store.iniciarJuego(store.nombreJugador)
+  actualizarPreguntaActual()
   estadoJuego.value = 'jugando'
   reiniciarEstadoPregunta()
 }
