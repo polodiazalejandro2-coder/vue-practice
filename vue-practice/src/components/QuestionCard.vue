@@ -37,7 +37,7 @@
 
     <div v-if="respondido" class="answer-feedback">
       <p class="feedback-text" :class="esCorrecta ? 'texto-verde' : 'texto-rojo'">
-        {{ mensajeFeedback }}
+        {{ esCorrecta ? 'Respuesta correcta (+10 puntos)' : 'Respuesta incorrecta (-5 puntos)' }}
       </p>
 
       <button class="next-btn" @click="$emit('siguiente')">
@@ -64,10 +64,6 @@ defineProps({
   esCorrecta: {
     type: Boolean,
     default: false,
-  },
-  mensajeFeedback: {
-    type: String,
-    default: "",
   },
   esUltima: {
     type: Boolean,

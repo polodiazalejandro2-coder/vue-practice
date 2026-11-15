@@ -1,6 +1,6 @@
 <template>
   <div class="quizz-view-wrapper">
-    <div v-if="gameState === 'welcome'" class="game-card welcome-card">
+    <div v-if="estadoJuego === 'bienvenida'" class="game-card welcome-card">
       <div class="welcome-tag">[ Registro ]</div>
       <h2 class="welcome-title">Adivina la Cancion</h2>
       <p class="welcome-subtitle">
@@ -22,11 +22,11 @@
         </div>
       </div>
 
-      <form @submit.prevent="handleStartGame" class="name-form">
+      <form @submit.prevent="empezarJuego" class="name-form">
         <label class="input-label" for="playerNameInput">Nombre del jugador:</label>
         <input
           id="playerNameInput"
-          v-model="inputPlayerName"
+          v-model="nombreIntroducido"
           type="text"
           class="name-input"
           placeholder="Escribe tu nombre"
@@ -37,18 +37,19 @@
         <button
           type="submit"
           class="start-game-btn"
-          :disabled="!inputPlayerName.trim()"
+          :disabled="!nombreIntroducido.trim()"
         >
           Comenzar Juego
         </button>
       </form>
     </div>
 
-    <div v-else-if="gameState === 'playing'" class="game-card playing-card">
+    <div v-else-if="estadoJuego === 'jugando'" class="game-card playing-card">
       <GameHeader />
 
       <AudioPlayer
-        ref="audioPlayerRef"
+        ref="reproductorAudio"
+        :key="preguntaActual.id"
         v-if="preguntaActual"
         :audio-src="preguntaActual.audioSrc"
       />
@@ -59,15 +60,14 @@
         :respondido="respondido"
         :opcion-seleccionada="opcionSeleccionada"
         :es-correcta="esCorrecta"
-        :mensaje-feedback="mensajeFeedback"
         :es-ultima="esUltima"
-        @seleccionar-opcion="handleSelectOption"
-        @siguiente="handleNextQuestion"
+        @seleccionar-opcion="seleccionarOpcion"
+        @siguiente="avanzarPregunta"
       />
     </div>
 
-    <div v-else-if="gameState === 'finished'" class="game-card finished-card">
-      <GameFinished @restart="handleRestartGame" />
+    <div v-else-if="estadoJuego === 'terminado'" class="game-card finished-card">
+      <GameFinished @restart="volverAJugar" />
     </div>
   </div>
 </template>
@@ -82,14 +82,13 @@ import GameFinished from '@/components/GameFinished.vue'
 
 const store = useGameStore()
 
-const gameState = ref('welcome')
-const inputPlayerName = ref('')
-const audioPlayerRef = ref(null)
+const estadoJuego = ref('bienvenida')
+const nombreIntroducido = ref('')
+const reproductorAudio = ref(null)
 
 const respondido = ref(false)
 const opcionSeleccionada = ref('')
 const esCorrecta = ref(false)
-const mensajeFeedback = ref('')
 
 const preguntaActual = computed(() => {
   return store.preguntas[store.indicePregunta] || null
@@ -99,25 +98,29 @@ const esUltima = computed(() => {
   return store.indicePregunta === store.preguntas.length - 1
 })
 
-function resetQuestionState() {
+function reiniciarEstadoPregunta() {
   respondido.value = false
   opcionSeleccionada.value = ''
   esCorrecta.value = false
-  mensajeFeedback.value = ''
 }
 
-function handleStartGame() {
-  if (!inputPlayerName.value.trim()) return
-  store.iniciarJuego(inputPlayerName.value)
-  gameState.value = 'playing'
-  resetQuestionState()
+function empezarJuego() {
+  if (!nombreIntroducido.value.trim()) {
+    return
+  }
+
+  store.iniciarJuego(nombreIntroducido.value)
+  estadoJuego.value = 'jugando'
+  reiniciarEstadoPregunta()
 }
 
-function handleSelectOption(opcion) {
-  if (respondido.value) return
+function seleccionarOpcion(opcion) {
+  if (respondido.value) {
+    return
+  }
 
-  if (audioPlayerRef.value) {
-    audioPlayerRef.value.detenerAudio()
+  if (reproductorAudio.value) {
+    reproductorAudio.value.detenerAudio()
   }
 
   respondido.value = true
@@ -125,29 +128,27 @@ function handleSelectOption(opcion) {
 
   if (opcion === preguntaActual.value.correct) {
     esCorrecta.value = true
-    mensajeFeedback.value = 'Respuesta correcta (+10 puntos)'
     store.sumarPuntos()
   } else {
     esCorrecta.value = false
-    mensajeFeedback.value = 'Respuesta incorrecta (-5 puntos)'
     store.restarPuntos()
   }
 }
 
-function handleNextQuestion() {
+function avanzarPregunta() {
   if (esUltima.value) {
     store.guardarEnRanking()
-    gameState.value = 'finished'
+    estadoJuego.value = 'terminado'
   } else {
     store.siguientePregunta()
-    resetQuestionState()
+    reiniciarEstadoPregunta()
   }
 }
 
-function handleRestartGame() {
+function volverAJugar() {
   store.iniciarJuego(store.nombreJugador)
-  gameState.value = 'playing'
-  resetQuestionState()
+  estadoJuego.value = 'jugando'
+  reiniciarEstadoPregunta()
 }
 </script>
 

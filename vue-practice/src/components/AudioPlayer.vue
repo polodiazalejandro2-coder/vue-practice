@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Howl } from 'howler'
 
 const props = defineProps({
@@ -51,13 +51,6 @@ function reproducirFragmento() {
     detenerAudio()
   }, 5000)
 }
-
-watch(
-  () => props.audioSrc,
-  () => {
-    reproducirFragmento()
-  }
-)
 
 onMounted(() => {
   reproducirFragmento()

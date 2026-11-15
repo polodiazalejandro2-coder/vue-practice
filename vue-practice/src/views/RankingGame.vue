@@ -59,15 +59,10 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
 
 const store = useGameStore()
-
-onMounted(() => {
-  store.cargarRanking()
-})
 
 function getRankClass(index) {
   if (index === 0) return 'item-gold'

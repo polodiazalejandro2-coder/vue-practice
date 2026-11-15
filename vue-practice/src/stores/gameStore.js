@@ -18,13 +18,25 @@ export const useGameStore = defineStore('game', {
       this.aciertos = 0
       this.indicePregunta = 0
 
-      const cancionesMezcladas = [...songsData].sort(() => Math.random() - 0.5)
+      const cancionesMezcladas = songsData.slice()
+      cancionesMezcladas.sort(function () {
+        return Math.random() - 0.5
+      })
 
-      this.preguntas = cancionesMezcladas.map((cancion) => {
-        const opcionesMezcladas = [...cancion.options].sort(() => Math.random() - 0.5)
+      this.preguntas = cancionesMezcladas.map(function (cancion) {
+        const opcionesMezcladas = cancion.options.slice()
+        opcionesMezcladas.sort(function () {
+          return Math.random() - 0.5
+        })
+
         return {
-          ...cancion,
-          options: opcionesMezcladas
+          id: cancion.id,
+          title: cancion.title,
+          artist: cancion.artist,
+          question: cancion.question,
+          options: opcionesMezcladas,
+          correct: cancion.correct,
+          audioSrc: cancion.audioSrc
         }
       })
     },
@@ -43,24 +55,17 @@ export const useGameStore = defineStore('game', {
     },
 
     guardarEnRanking() {
-      const fecha = new Date().toLocaleDateString('es-ES')
       const partida = {
         nombre: this.nombreJugador,
         puntos: this.puntos,
         aciertos: this.aciertos,
-        fecha: fecha
       }
 
       this.ranking.push(partida)
-      this.ranking.sort((a, b) => b.puntos - a.puntos)
+      this.ranking.sort(function (partidaA, partidaB) {
+        return partidaB.puntos - partidaA.puntos
+      })
       localStorage.setItem('ranking', JSON.stringify(this.ranking))
-    },
-
-    cargarRanking() {
-      const guardado = localStorage.getItem('ranking')
-      if (guardado) {
-        this.ranking = JSON.parse(guardado)
-      }
     }
   }
 })

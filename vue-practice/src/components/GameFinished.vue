@@ -2,8 +2,8 @@
   <div class="finished-container">
     <div class="result-badge">[ FIN DEL JUEGO ]</div>
 
-    <h2 class="feedback-title">{{ motivationalTitle }}</h2>
-    <p class="feedback-subtitle">{{ motivationalSubtitle }}</p>
+    <h2 class="feedback-title">{{ tituloMotivacion }}</h2>
+    <p class="feedback-subtitle">{{ mensajeMotivacion }}</p>
 
     <div class="score-summary-card">
       <div class="final-score-section">
@@ -25,26 +25,6 @@
       </div>
     </div>
 
-    <div class="ranking-preview-section">
-      <div class="ranking-preview-title">
-        Resumen de tu partida
-      </div>
-
-      <div class="user-rank-highlight">
-        <div class="user-rank-left">
-          <span class="rank-name">{{ store.nombreJugador }}</span>
-          <span class="you-badge">[ Tu ]</span>
-        </div>
-        <div class="user-rank-center">
-          <span>{{ precision }}% de precision</span>
-        </div>
-        <div class="user-rank-right">
-          <span class="rank-points-num">{{ store.puntos }}</span>
-          <span class="rank-points-text">puntos</span>
-        </div>
-      </div>
-    </div>
-
     <button class="play-again-btn" @click="$emit('restart')">
       Jugar de Nuevo
     </button>
@@ -52,28 +32,27 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useGameStore } from '@/stores/gameStore'
 
 const store = useGameStore()
 defineEmits(['restart'])
 
-const precision = computed(() => {
-  if (!store.preguntas.length) return 0
-  return Math.round((store.aciertos / store.preguntas.length) * 100)
-})
+let precision = 0
 
-const motivationalTitle = computed(() => {
-  if (store.puntos >= 40) return 'Excelente resultado'
-  if (store.puntos >= 20) return 'Buen trabajo'
-  return 'Partida finalizada'
-})
+if (store.preguntas.length > 0) {
+  precision = Math.round((store.aciertos / store.preguntas.length) * 100)
+}
 
-const motivationalSubtitle = computed(() => {
-  if (store.puntos >= 40) return 'Has acertado la mayoria de las canciones.'
-  if (store.puntos >= 20) return 'Buen intento, puedes mejorar tu puntuacion.'
-  return 'Sigue practicando para subir en el ranking.'
-})
+let tituloMotivacion = 'Partida finalizada'
+let mensajeMotivacion = 'Sigue practicando para subir en el ranking.'
+
+if (store.puntos >= 40) {
+  tituloMotivacion = 'Excelente resultado'
+  mensajeMotivacion = 'Has acertado la mayoria de las canciones.'
+} else if (store.puntos >= 20) {
+  tituloMotivacion = 'Buen trabajo'
+  mensajeMotivacion = 'Buen intento, puedes mejorar tu puntuacion.'
+}
 </script>
 
 <style scoped>
@@ -163,67 +142,6 @@ const motivationalSubtitle = computed(() => {
   font-size: 0.95rem;
   font-weight: 700;
   color: #ffffff;
-}
-
-.ranking-preview-section {
-  width: 100%;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.ranking-preview-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #aaaaaa;
-  margin-bottom: 0.75rem;
-}
-
-.user-rank-highlight {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #242424;
-  border: 1px solid #3b82f6;
-  padding: 0.75rem 1rem;
-}
-
-.user-rank-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.rank-name {
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.you-badge {
-  font-size: 0.75rem;
-  color: #3b82f6;
-  font-weight: 700;
-}
-
-.user-rank-center {
-  font-size: 0.85rem;
-  color: #888888;
-}
-
-.user-rank-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.rank-points-num {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #3b82f6;
-}
-
-.rank-points-text {
-  font-size: 0.75rem;
-  color: #666666;
 }
 
 .play-again-btn {
