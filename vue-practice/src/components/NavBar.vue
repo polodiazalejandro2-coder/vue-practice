@@ -1,9 +1,9 @@
 <template>
   <header class="navbar">
     <div class="navbar-container">
-      <RouterLink to="/" class="brand">
-        Adivina la Cancion
-      </RouterLink>
+      <p class="brand">
+        Alejandroborrachogafasrotas
+      </p>
 
       <nav class="nav-links">
         <RouterLink to="/" class="nav-link" active-class="active" exact>

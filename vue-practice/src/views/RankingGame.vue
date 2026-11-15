@@ -35,8 +35,6 @@
 
               <div class="details-row">
                 <span>{{ item.aciertos }} aciertos</span>
-                <span class="separator">-</span>
-                <span>{{ item.fecha }}</span>
               </div>
             </div>
           </div>
@@ -230,10 +228,6 @@ function getRankClass(index) {
   gap: 0.4rem;
   font-size: 0.8rem;
   color: #888888;
-}
-
-.separator {
-  color: #555555;
 }
 
 .item-right {

@@ -14,7 +14,6 @@ const router = createRouter({
     {
       path: '/jugar',
       name: 'jugar',
-      alias: ['/quizz', '/concurso'],
       component: QuizzView
     },
     {
@@ -23,9 +22,6 @@ const router = createRouter({
       component: RankingGame
     }
   ],
-  scrollBehavior() {
-    return { top: 0 }
-  }
 })
 
 export default router
