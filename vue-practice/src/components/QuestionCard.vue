@@ -13,8 +13,10 @@
         class="option-btn"
         :class="{
           'opcion-correcta': respondido && opcion === pregunta.correct,
-          'opcion-incorrecta': respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct,
-          'opcion-desactivada': respondido && opcion !== pregunta.correct && opcion !== opcionSeleccionada
+          'opcion-incorrecta':
+            respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct,
+          'opcion-desactivada':
+            respondido && opcion !== pregunta.correct && opcion !== opcionSeleccionada,
         }"
         :disabled="respondido"
         @click="$emit('seleccionar-opcion', opcion)"
@@ -24,7 +26,10 @@
         <span v-if="respondido && opcion === pregunta.correct" class="badge-acierto">
           [Correcto]
         </span>
-        <span v-else-if="respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct" class="badge-fallo">
+        <span
+          v-else-if="respondido && opcion === opcionSeleccionada && opcion !== pregunta.correct"
+          class="badge-fallo"
+        >
           [Incorrecto]
         </span>
       </button>
@@ -36,7 +41,7 @@
       </p>
 
       <button class="next-btn" @click="$emit('siguiente')">
-        {{ esUltima ? 'Ver Resultados' : 'Siguiente Pregunta' }}
+        {{ esUltima ? "Ver Resultados" : "Siguiente Pregunta" }}
       </button>
     </div>
   </div>
@@ -46,31 +51,31 @@
 defineProps({
   pregunta: {
     type: Object,
-    required: true
+    required: true,
   },
   respondido: {
     type: Boolean,
-    default: false
+    default: false,
   },
   opcionSeleccionada: {
     type: String,
-    default: ''
+    default: "",
   },
   esCorrecta: {
     type: Boolean,
-    default: false
+    default: false,
   },
   mensajeFeedback: {
     type: String,
-    default: ''
+    default: "",
   },
   esUltima: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-defineEmits(['seleccionar-opcion', 'siguiente'])
+defineEmits(["seleccionar-opcion", "siguiente"]);
 </script>
 
 <style scoped>

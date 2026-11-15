@@ -3,12 +3,10 @@
     <div class="header-top">
       <div class="player-info">
         <span class="app-subtitle">Adivina la Cancion</span>
-        <span class="player-name">{{ store.nombreJugador || 'Jugador' }}</span>
+        <span class="player-name">{{ store.nombreJugador || "Jugador" }}</span>
       </div>
 
-      <div class="score-box">
-        Puntos: {{ store.puntos }}
-      </div>
+      <div class="score-box">Puntos: {{ store.puntos }}</div>
     </div>
 
     <div class="progress-info">
@@ -18,9 +16,9 @@
 </template>
 
 <script setup>
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from "@/stores/gameStore";
 
-const store = useGameStore()
+const store = useGameStore();
 </script>
 
 <style scoped>

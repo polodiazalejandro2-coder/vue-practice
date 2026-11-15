@@ -1,29 +1,21 @@
 <template>
   <header class="navbar">
     <div class="navbar-container">
-      <p class="brand">
-        Alejandroborrachogafasrotas
-      </p>
+      <p class="brand">Alejandroborrachogafasrotas</p>
 
       <nav class="nav-links">
-        <RouterLink to="/" class="nav-link" active-class="active" exact>
-          Inicio
-        </RouterLink>
+        <RouterLink to="/" class="nav-link" active-class="active" exact> Inicio </RouterLink>
 
-        <RouterLink to="/jugar" class="nav-link" active-class="active">
-          Jugar
-        </RouterLink>
+        <RouterLink to="/jugar" class="nav-link" active-class="active"> Jugar </RouterLink>
 
-        <RouterLink to="/ranking" class="nav-link" active-class="active">
-          Ranking
-        </RouterLink>
+        <RouterLink to="/ranking" class="nav-link" active-class="active"> Ranking </RouterLink>
       </nav>
     </div>
   </header>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
 </script>
 
 <style scoped>
