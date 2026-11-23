@@ -2,8 +2,6 @@
   <div class="question-card" v-if="pregunta">
     <div class="question-header">
       <h3 class="question-title">{{ pregunta.question }}</h3>
-      <p class="question-artist" v-if="respondido">{{ pregunta.title }} - {{ pregunta.artist }}</p>
-      <p class="question-artist-hint" v-else>Pista: {{ pregunta.artist }}</p>
     </div>
 
     <div class="options-grid">

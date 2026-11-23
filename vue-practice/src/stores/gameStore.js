@@ -37,8 +37,6 @@ export const useGameStore = defineStore('game', function () {
 
       const pregunta = {
         id: cancion.id,
-        title: cancion.title,
-        artist: cancion.artist,
         question: cancion.question,
         options: opcionesMezcladas,
         correct: cancion.correct,
